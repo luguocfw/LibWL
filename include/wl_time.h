@@ -10,10 +10,10 @@
 #define __WL_TIME_H__
 #include <stdint.h>
 
-int64_t GetTimeSec();
+int64_t WLGetTimeSec();
 
-int64_t GetTimeMs();
+int64_t WLGetTimeMs();
 
-int64_t GetTimeUs();
+int64_t WLGetTimeUs();
 
 #endif

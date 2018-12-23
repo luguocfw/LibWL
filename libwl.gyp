@@ -20,16 +20,22 @@
         ['OS=="LINUX"',{
           'sources':[
             'time/linux/wl_time.c',
+            'thread/linux/wl_mutex.c',
           ],
         }],
         ['OS=="WIN32"',{
           'sources':[
             'time/win/wl_time.c',
+            'thread/win/wl_mutex.c',
           ],
         }],
       ],
       'sources':[
-        'include/wl_time.h'
+        'memory/wl_memory.c',
+        'include/wl_memory.h',
+        'include/wl_time.h',
+        'include/wl_mutex.h',
+        'include/wl_type.h',
       ],
     },
   ], # targets
