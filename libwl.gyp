@@ -14,29 +14,22 @@
       'target_name': 'libwl',
       'type': 'static_library',
       'include_dirs':[
-        '<(PRO_ROOT)',
+        '<(PRO_ROOT)/include',
       ],
       'conditions':[
         ['OS=="LINUX"',{
-          'include_dirs':[
-            '<(PRO_ROOT)/base/linux',
-          ],
           'sources':[
-            'base/linux/wl_log.c',
-            'base/linux/wl_log.h',
+            'time/linux/wl_time.c',
           ],
         }],
         ['OS=="WIN32"',{
-          'include_dirs':[
-            '<(PRO_ROOT)/base/win',
-          ],
           'sources':[
-            'base/win/wl_log.c',
-            'base/win/wl_log.h',
+            'time/win/wl_time.c',
           ],
         }],
       ],
       'sources':[
+        'include/wl_time.h'
       ],
     },
   ], # targets

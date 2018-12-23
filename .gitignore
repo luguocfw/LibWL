@@ -1,4 +1,5 @@
 /.vs/
+/Default/
 *.sln
 *.vcxproj
 *.vcxproj.filters
