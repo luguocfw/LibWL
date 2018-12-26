@@ -15,5 +15,8 @@ void *WLMalloc(long size) {
 }
 
 void WLFree(void *ptr) {
-  return free(ptr);
+  if (ptr == NULL) {
+    return;
+  }
+  free(ptr);
 }
