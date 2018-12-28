@@ -91,6 +91,7 @@ int WLThreadCreate(WL_THREAD **thr, const WL_THREAD_ATTR *attr, const char *thre
     ret = WL_ERR_UNKNOW;
     goto err;
   }
+  *thr = thr_handle;
   return 0;
 err:
   if (thr_handle != NULL) {
@@ -108,7 +109,9 @@ void WLThreadDestroy(WL_THREAD *thr, void **re_data) {
   }
   struct WL_THREAD *thr_handle = (struct WL_THREAD *)thr;
   WaitForSingleObject(thr_handle->thr_handle, INFINITE);
-  *re_data = thr_handle->re_data;
+  if (re_data != NULL) {
+    *re_data = thr_handle->re_data;
+  }
   if (thr_handle->name != NULL) {
     WLFree(thr_handle->name);
   }

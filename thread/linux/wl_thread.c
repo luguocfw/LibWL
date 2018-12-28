@@ -65,6 +65,7 @@ int WLThreadCreate(WL_THREAD ** thr, const WL_THREAD_ATTR * attr, const char * t
     ret = WL_ERR_UNKNOW;
     goto err;
   }
+  *thr = thr_handle;
   return 0;
 err:
   if (thr_handle != NULL) {

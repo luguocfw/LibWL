@@ -48,7 +48,7 @@ static void *Thread0(void *arge) {
 
 static void *Thread1(void *arge) {
   char *test_str = (char *)arge;
-  while (g_thr0_run_ == 1) {
+  while (g_thr1_run_ == 1) {
     printf("thread 1 wait lock...\n");
     WLMutexLock(g_data_mutex_);
     printf("thread 1 get lock!!\n");
@@ -73,7 +73,7 @@ static void *Thread1(void *arge) {
 
 static void *Thread2(void *arge) {
   char *test_str = (char *)arge;
-  while (g_thr0_run_ == 1) {
+  while (g_thr2_run_ == 1) {
     printf("thread 2 wait lock...\n");
     WLMutexLock(g_data_mutex_);
     printf("thread 2 get lock!!\n");
@@ -91,12 +91,16 @@ static void *Thread2(void *arge) {
     WLSleepSec(1);
     WLMutexUnLock(g_data_mutex_);
     printf("thread 2 release lock\n");
+    break;
   }
   printf("thread 2 exit...\n");
   return NULL;
 }
 
 int main() {
+#if defined(OS_WIN32)
+  //_CrtSetBreakAlloc(81);
+#endif
   WL_THREAD  *threads_fd[3] = { NULL };
   int thread_cnt = 3;
   g_buf_len_ = 256;
@@ -138,6 +142,9 @@ int main() {
   WLThreadDestroy(threads_fd[0], NULL);
   WLMutexDestroy(g_data_mutex_);
   WLFree(g_buf_);
+#if defined(OS_WIN32)
+  _CrtDumpMemoryLeaks();
+#endif
   return 0;
 err:
   if (threads_fd[2] != NULL) {
@@ -158,5 +165,8 @@ err:
   if (g_buf_ != 0) {
     WLFree(g_buf_);
   }
+#if defined(OS_WIN32)
+  _CrtDumpMemoryLeaks();
+#endif
   return 1;
 }
