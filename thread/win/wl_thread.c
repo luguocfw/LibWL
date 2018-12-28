@@ -114,3 +114,13 @@ void WLThreadDestroy(WL_THREAD *thr, void **re_data) {
   }
   WLFree(thr_handle);
 }
+
+void WLSleepMs(uint64_t ms)
+{
+  Sleep(ms);
+}
+
+void WLSleepSec(uint64_t sec)
+{
+  Sleep(sec * 1000);
+}

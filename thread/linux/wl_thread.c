@@ -12,6 +12,7 @@
 
 #include <pthread.h>
 #include <sys/prctl.h>
+#include <unistd.h>
 
 struct WL_THREAD {
   pthread_t         thread_id;
@@ -86,4 +87,14 @@ void WLThreadDestroy(WL_THREAD * thr, void ** re_data)
     WLFree(thr_handle->name);
   }
   WLFree(thr_handle);
+}
+
+void WLSleepMs(uint64_t ms)
+{
+  usleep(ms * 1000);
+}
+
+void WLSleepSec(uint64_t sec)
+{
+  sleep(sec);
 }

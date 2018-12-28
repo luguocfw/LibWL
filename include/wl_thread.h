@@ -9,6 +9,8 @@
 #ifndef __WL_THREAD_H__
 #define __WL_THREAD_H__
 
+#include <stdint.h>
+
 typedef struct WL_THREAD WL_THREAD;
 
 typedef struct {
@@ -19,5 +21,8 @@ int WLThreadCreate(WL_THREAD **thr, const WL_THREAD_ATTR *attr, const char *thre
 
 void WLThreadDestroy(WL_THREAD *thr,void **re_data);
 
+void WLSleepMs(uint64_t ms);
+
+void WLSleepSec(uint64_t sec);
 
 #endif
