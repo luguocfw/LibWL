@@ -1,5 +1,8 @@
 /.vs/
 /Default/
+/Debug/
+*.VC.VC.opendb
+*.VC.db
 *.sln
 *.vcxproj
 *.vcxproj.filters

@@ -40,6 +40,21 @@
         'include/wl_type.h',
         'include/wl_thread.h',
       ],
+      'direct_dependent_settings':{
+        'include_dirs':[
+          '<(PRO_ROOT)/include',
+        ],
+      },
+    },
+    {
+      'target_name': 'thread_test',
+      'type': 'executable',
+      'sources':[
+        'demo/all_test.c',
+      ],
+      'dependencies': [
+        'libwl',
+      ],
     },
   ], # targets
 }
