@@ -20,6 +20,8 @@ static WL_MUTEX *g_data_mutex_ = NULL;
 static int g_thr0_run_ = 0;
 static int g_thr1_run_ = 0;
 static int g_thr2_run_ = 0;
+static WL_THREAD *g_thread20_ = NULL;
+static int g_thr20_run_ = 0;
 
 static void *Thread0(void *arge) {
   char *test_str = (char *)arge;
@@ -71,8 +73,38 @@ static void *Thread1(void *arge) {
   return NULL;
 }
 
+static void *Thread20(void *arge) {
+  char test_str[] = "test thread 2.0";
+  while (g_thr20_run_ == 1) {
+    printf("thread 2.0 wait lock...\n");
+    WLMutexLock(g_data_mutex_);
+    printf("thread 2.0 get lock!!\n");
+    if (g_buf_ != NULL) {
+      printf("thread 2.0 old g_buf is:%s,modify to %s\n", g_buf_, test_str);
+      memset(g_buf_, 0, g_buf_len_);
+      strcpy(g_buf_, test_str);
+    }
+    else
+    {
+      printf("thread 2.0 old g_buf is NULL\n");
+    }
+    printf("thread 2.0 sleep ...\n");
+    WLSleepMs(10);
+    WLSleepSec(1);
+    WLMutexUnLock(g_data_mutex_);
+    printf("thread 2.0 release lock\n");
+  }
+  printf("thread 2.0 exit...\n");
+  return NULL;
+}
+
 static void *Thread2(void *arge) {
   char *test_str = (char *)arge;
+  g_thr20_run_ = 1;
+  int ret = WLThreadCreate(&g_thread20_, NULL, "test_thread_20", Thread20, NULL);
+  if (ret != 0) {
+    printf("create sub thread failed\n");
+  }
   while (g_thr2_run_ == 1) {
     printf("thread 2 wait lock...\n");
     WLMutexLock(g_data_mutex_);
@@ -136,6 +168,8 @@ int main() {
   WLSleepSec(10);
   g_thr2_run_ = 0;
   WLThreadDestroy(threads_fd[2], NULL);
+  g_thr20_run_ = 0;
+  WLThreadDestroy(g_thread20_, NULL);
   g_thr1_run_ = 0;
   WLThreadDestroy(threads_fd[1], NULL);
   g_thr0_run_ = 0;
