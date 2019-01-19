@@ -8,6 +8,7 @@
 //
 #include <wl_time.h>
 #include <sys/time.h>
+#include <time.h>
 
 int64_t WLGetTimeSec() {
   return (int64_t)time(NULL);

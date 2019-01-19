@@ -13,6 +13,7 @@
 #include <pthread.h>
 #include <sys/prctl.h>
 #include <unistd.h>
+#include <string.h>
 
 struct WL_THREAD {
   pthread_t         thread_id;
@@ -82,7 +83,7 @@ void WLThreadDestroy(WL_THREAD * thr, void ** re_data)
   if (thr == NULL) {
     return;
   }
-  struct WL_THREAD * thr_handle = (struct WL_THREAD)thr;
+  struct WL_THREAD * thr_handle = (struct WL_THREAD *)thr;
   pthread_join(thr_handle->thread_id, re_data);
   if (thr_handle->name != NULL) {
     WLFree(thr_handle->name);
