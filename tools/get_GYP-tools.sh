@@ -2,5 +2,5 @@
 
 if [ ! -d GYP-Tools ]
 then
-	git clone git@github.com:luguocfw/GYP-Tools.git
+	git clone https://github.com/luguocfw/GYP-Tools
 fi
