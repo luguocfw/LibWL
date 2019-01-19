@@ -1,4 +1,5 @@
 /.vs/
+/out/
 /Default/
 /Debug/
 /demo/Debug/
@@ -8,3 +9,5 @@
 *.sln
 *.vcxproj
 *.vcxproj.filters
+*.mk
+Makefile
