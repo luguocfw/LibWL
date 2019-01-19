@@ -2,7 +2,7 @@
 ROOT=`pwd`
 CROSS_COMPILE=
 GYP_TOOLS=${ROOT}/tools/GYP-Tools
-ROOT_GYP=${ROOT}/libwl.gyp
+ROOT_GYP=${ROOT}/all.gyp
 
 export CC=${CROSS_COMPILE}gcc
 export CXX=${CROSS_COMPILE}g++
@@ -25,14 +25,17 @@ then
 fi
 
 export OS_TYPE=""
+export OS_NAME=""
 if [ $1 -eq 0 ]
 then
   echo "setting sytem type is Linux"
   export OS_TYPE="LINUX"
+  export OS_NAME="linux"
 elif [ $1 -eq 1 ]
 then
   echo "setting sytem type is Windows"
   export OS_TYPE="WIN32"
+  export OS_NAME="win"
 else
   Usage
   return 1
@@ -40,7 +43,7 @@ fi
 
 function env_base()
 {
-  export GYP_DEFINES="PRO_ROOT=${ROOT} OS=${OS_TYPE} "
+  export GYP_DEFINES="PRO_ROOT=${ROOT} OS=${OS_TYPE} OS_NAME=${OS_NAME} "
 }
 
 function build()

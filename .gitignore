@@ -1,6 +1,8 @@
 /.vs/
 /Default/
 /Debug/
+/demo/Debug/
+/src/Debug/
 *.VC.VC.opendb
 *.VC.db
 *.sln

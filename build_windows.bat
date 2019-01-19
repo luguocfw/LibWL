@@ -2,7 +2,7 @@
 set cur_path=%~dp0
 set "cur_path=%cur_path:\=/%"
 set GYP_TOOLS=%cur_path%tools/GYP-Tools/gyp
-set ROOT_GYP=%cur_path%libwl.gyp
+set ROOT_GYP=%cur_path%all.gyp
 set GYP_DEFINES=PRO_ROOT=%cur_path% 
 set cmd_os_type=%1
 set cmd_build_type=%2
@@ -17,10 +17,12 @@ echo "input sytem type num:%cmd_os_type%"
 if %cmd_os_type% equ 0 (
   echo "setting system type is Linux"
   set OS_TYPE="LINUX"
+  set OS_NAME="linux"
 ) else (
   if %cmd_os_type% equ 1 (
     echo "setting system type is Windows"
     set OS_TYPE="WIN32"
+    set OS_NAME="win"
   ) else (
 	goto usage
   )
@@ -37,7 +39,7 @@ if %cmd_build_type% equ 0 (
   )
 )
 
-set GYP_DEFINES=%GYP_DEFINES% OS=%OS_TYPE% build_type=%build%
+set GYP_DEFINES=%GYP_DEFINES% OS=%OS_TYPE% build_type=%build% OS_NAME=%OS_NAME%
 
 cd tools
 call get_GYP-tools.bat

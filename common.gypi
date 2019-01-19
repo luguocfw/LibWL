@@ -6,9 +6,15 @@
 # mail: cfwang_9984@163.com
 #
 {
+  'variables': {
+    'os_name':'<(OS_NAME)',
+  },
   'target_defaults': {
     'conditions': [
       ['OS=="LINUX"',{
+        'variables': {
+          'os_name':'linux',
+        },
         'defines': ['OS_LINUX'],
         'libraries': [
           '-lpthread',
@@ -28,6 +34,9 @@
         ], # conditions
       }], # OS=="LINUX"
       ['OS=="WIN32"',{
+        'variables': {
+          'os_name':'win',
+        },
         'defines': ['OS_WIN32'],
         'configurations':{
           'Debug': {
