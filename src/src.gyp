@@ -24,9 +24,12 @@
         'include/wl_type.h',
         'include/wl_thread.h',
         'memory/wl_memory.c',
-        'os/<(os_name)/thread/wl_mutex.c',
-        'os/<(os_name)/thread/wl_thread.c',
-        'os/<(os_name)/time/wl_time.c',
+#        'os/<(os_name)/thread/wl_mutex.c',
+#        'os/<(os_name)/thread/wl_thread.c',
+#        'os/<(os_name)/time/wl_time.c',
+      ],
+      'dependencies':[
+        'os/<(os_name)/os.gyp:os_sources',
       ],
       'direct_dependent_settings':{
         'include_dirs':[
