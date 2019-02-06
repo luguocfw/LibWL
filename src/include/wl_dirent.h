@@ -21,7 +21,7 @@ typedef struct {
   WL_DIR_TYPE         type;
   char                *name;
   int                 name_len;
-  int                 size;
+  long                size;
 }WL_DIRENT;
 
 WL_DIR *WLOpenDir(const char *path);

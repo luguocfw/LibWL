@@ -25,25 +25,23 @@ struct WL_DIR {
   long            dir_handle;
   WL_LIST_HEAD_S      *read_list;
   WL_LIST_S           *cur_pos;
+  long                total_offset;
 };
 
 static void WLDirentCover(struct _finddata_t *fa_in, WL_DIRENT *dirent_out) {
   dirent_out->name = fa_in->name;
   dirent_out->name_len = strlen(dirent_out->name);
   dirent_out->size = fa_in->size;
-  if (((fa_in->attrib | _A_HIDDEN) != 0x00) || ((fa_in->attrib | _A_NORMAL) != 0x00) ||
-    ((fa_in->attrib | _A_RDONLY) != 0x00) || ((fa_in->attrib | _A_SYSTEM) != 0x00)) {
+  if (((fa_in->attrib & _A_SUBDIR) == 0x00)) {
     dirent_out->type = WL_DIR_FILE;
   }
-  else if ((fa_in->attrib | _A_SUBDIR) != 0x00) {
-    dirent_out->type = WL_DIR_DIR;
-  }
   else {
-    dirent_out->type = WL_DIR_UNKNOW;
+    dirent_out->type = WL_DIR_DIR;
   }
 }
 
-static int WLLoadAllDir(const char *path, WL_LIST_HEAD_S *list_head, long *handle) {
+static int WLLoadAllDir(const char *path, WL_DIR *dir) {
+  dir->total_offset = 0;
   int str_len = strlen(path);
   char *path_temp = WLMalloc(str_len + 3);
   if (path_temp == NULL) {
@@ -71,7 +69,7 @@ static int WLLoadAllDir(const char *path, WL_LIST_HEAD_S *list_head, long *handl
   WLDirentCover(&first_node->fa, &first_node->re_dirent);
   first_node->dir_offset = total_offset;
   total_offset += first_node->re_dirent.size;
-  int ret = WLListAddNode(list_head, first_node);
+  int ret = WLListAddNode(dir->read_list, first_node);
   if (ret != WL_SUCCESS) {
     _findclose(win_handle);
     WLFree(first_node);
@@ -91,13 +89,14 @@ static int WLLoadAllDir(const char *path, WL_LIST_HEAD_S *list_head, long *handl
     WLDirentCover(&node->fa, &node->re_dirent);
     node->dir_offset = total_offset;
     total_offset += node->re_dirent.size;
-    ret = WLListAddNode(list_head, node);
+    ret = WLListAddNode(dir->read_list, node);
     if (ret != 0) {
       WLFree(node);
       break;
     }
   }
-  *handle = win_handle;
+  dir->dir_handle = win_handle;
+  dir->total_offset = total_offset;
   return WL_SUCCESS;
 }
 static void WLUnloadAllDir(WL_LIST_HEAD_S *list_head, long handle) {
@@ -122,7 +121,7 @@ WL_DIR *WLOpenDir(const char *path) {
     WLFree(dir);
     return NULL;
   }
-  if (WLLoadAllDir(path, dir->read_list,&dir->dir_handle) != WL_SUCCESS) {
+  if (WLLoadAllDir(path,dir) != WL_SUCCESS) {
     WLListDestroy(dir->read_list);
     WLFree(dir);
     return NULL;
@@ -156,14 +155,17 @@ WL_DIRENT *WLReaddir(WL_DIR *dir) {
 
 void WLRewindDir(WL_DIR *dir) {
   if (dir == NULL) {
-    return NULL;
+    return;
   }
   dir->cur_pos = dir->read_list->stList;
 }
 
 long WLTelldir(WL_DIR *dir) {
   if (dir == NULL) {
-    return NULL;
+    return WL_ERR_NULLPTR;
+  }
+  if (dir->cur_pos == NULL) {
+    return dir->total_offset;
   }
   return ((WL_NODE_DATA *)dir->cur_pos->pData)->dir_offset;
 }

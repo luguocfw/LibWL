@@ -13,6 +13,7 @@
 #include <wl_thread.h>
 #include <wl_time.h>
 #include <wl_type.h>
+#include <wl_dirent.h>
 
 static char *g_buf_ = NULL;
 static int g_buf_len_ = 0;
@@ -129,10 +130,7 @@ static void *Thread2(void *arge) {
   return NULL;
 }
 
-int main() {
-#if defined(OS_WIN32)
-  //_CrtSetBreakAlloc(81);
-#endif
+static int ThreadAndMutexTest() {
   WL_THREAD  *threads_fd[3] = { NULL };
   int thread_cnt = 3;
   g_buf_len_ = 256;
@@ -176,22 +174,19 @@ int main() {
   WLThreadDestroy(threads_fd[0], NULL);
   WLMutexDestroy(g_data_mutex_);
   WLFree(g_buf_);
-#if defined(OS_WIN32)
-  _CrtDumpMemoryLeaks();
-#endif
   return 0;
 err:
   if (threads_fd[2] != NULL) {
     g_thr2_run_ = 0;
-    WLThreadDestroy(threads_fd[2],NULL);
+    WLThreadDestroy(threads_fd[2], NULL);
   }
   if (threads_fd[1] != NULL) {
     g_thr1_run_ = 0;
-    WLThreadDestroy(threads_fd[1],NULL);
+    WLThreadDestroy(threads_fd[1], NULL);
   }
   if (threads_fd[0] != NULL) {
     g_thr0_run_ = 0;
-    WLThreadDestroy(threads_fd[0],NULL);
+    WLThreadDestroy(threads_fd[0], NULL);
   }
   if (g_data_mutex_ != NULL) {
     WLMutexDestroy(g_data_mutex_);
@@ -199,8 +194,89 @@ err:
   if (g_buf_ != 0) {
     WLFree(g_buf_);
   }
-#if defined(OS_WIN32)
+  return 1;
+}
+
+static long TraversDir(WL_DIR *dir) {
+  long total_offset = 0;
+  WL_DIRENT *ent = NULL;
+  while (1) {
+    total_offset = WLTelldir(dir);
+    printf("dir tell :%ld\n", total_offset);
+    ent = WLReaddir(dir);
+    if (ent == NULL) {
+      break;
+    }
+    printf("find dir:\tname:%s size:%d type:", ent->name, ent->size);
+    switch (ent->type) {
+      case WL_DIR_DIR:printf("SUBDIR\n"); break;
+      case WL_DIR_FILE:printf("FILE\n"); break;
+      case WL_DIR_UNKNOW:printf("UNKNOW\n"); break;
+      default:printf("ERROR\n"); break;
+    }
+  }
+  return total_offset;
+}
+
+static int DirentTest() {
+#if defined(WL_OS_WIN32)
+  char test_dir[] = "E:\\test_dir";
+#elif defined(WL_OS_LINUX)
+  char test_dir[] = "/";
+#endif
+  printf(">>>>>>>>dirent test<<<<<<<<<<<\n");
+  printf("test dir: %s\n", test_dir);
+  printf("system dir interval:%c\n", WLDirInterval());
+  WL_DIR *dir = WLOpenDir(test_dir);
+  if (dir == NULL) {
+    printf("open dir:%s failed\n", test_dir);
+    return 1;
+  }
+  TraversDir(dir);
+  printf("rewind dir test....\n");
+  WLRewindDir(dir);
+  int max_offset = TraversDir(dir);
+  if (max_offset > 0) {
+    printf("seek dir test, dir seek:%ld\n", max_offset / 2);
+    WLSeekDir(dir, max_offset / 2);
+    TraversDir(dir);
+  }
+  printf("close dir handle...\n");
+  WLCloseDir(dir);
+  printf("dirent test over , input enykey to continue\n");
+  getchar();
+  return 0;
+}
+
+void Usage() {
+  printf("all_test <test_num>\n");
+  printf("\t\ttest_num:\n");
+  printf("\t\t\t0: thread and mutex test\n");
+  printf("\t\t\t1: dirent traversing test\n");
+}
+
+int main(int argc, char *argv[]) {
+#if defined(WL_OS_WIN32)
+  //_CrtSetBreakAlloc(81);
+#endif
+  if (argc != 2) {
+    Usage();
+    goto exit;
+  }
+  switch (atoi(argv[1])) {
+    case 0:
+      ThreadAndMutexTest();
+      break;
+    case 1:
+      DirentTest();
+      break;
+    default:
+      Usage();
+      break;
+  }
+exit:
+#if defined(WL_OS_WIN32)
   _CrtDumpMemoryLeaks();
 #endif
-  return 1;
+  return 0;
 }
