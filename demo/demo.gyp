@@ -17,7 +17,7 @@
         'all_test.c',
       ],
       'dependencies': [
-        '<(PRO_ROOT)/src/src.gyp:libwl',
+        '<(WL_ROOT)/src/src.gyp:libwl',
       ],
     },
   ], # targets

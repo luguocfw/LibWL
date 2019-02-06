@@ -14,6 +14,7 @@ typedef enum {
   WL_ERR_UNKNOW = -1,
   WL_ERR_NOMEM = -2,
   WL_ERR_NULLPTR = -3,
+  WL_ERR_PARAMERR = -4,
 }WL_ERROR_CODE;
 
 #endif

@@ -43,7 +43,7 @@ fi
 
 function env_base()
 {
-  export GYP_DEFINES="PRO_ROOT=${ROOT} OS=${OS_TYPE} OS_NAME=${OS_NAME} "
+  export GYP_DEFINES="WL_ROOT=${ROOT} WL_OS=${OS_TYPE} WL_OS_NAME=${OS_NAME} "
 }
 
 function build()
@@ -58,13 +58,13 @@ function build()
 function build_release()
 {
   env_base
-  export GYP_DEFINES=$GYP_DEFINES"build_type=release "
+  export GYP_DEFINES=$GYP_DEFINES"wl_build_type=release "
   build
 }
 
 function build_debug()
 {
   env_base
-  export GYP_DEFINES=$GYP_DEFINES"build_type=debug "
+  export GYP_DEFINES=$GYP_DEFINES"wl_build_type=debug "
   build
 }

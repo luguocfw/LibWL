@@ -15,6 +15,7 @@
           'thread/wl_mutex.c',
           'thread/wl_thread.c',
           'time/wl_time.c',
+          'filesystem/wl_dirent.c',
         ],
       },
     },

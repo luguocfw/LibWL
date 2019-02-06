@@ -6,16 +6,10 @@
 # mail: cfwang_9984@163.com
 #
 {
-  'variables': {
-    'os_name':'<(OS_NAME)',
-  },
   'target_defaults': {
     'conditions': [
-      ['OS=="LINUX"',{
-        'variables': {
-          'os_name':'linux',
-        },
-        'defines': ['OS_LINUX'],
+      ['WL_OS=="LINUX"',{
+        'defines': ['WL_OS_LINUX'],
         'libraries': [
           '-lpthread',
           '-lrt',
@@ -26,18 +20,15 @@
           '-fPIC',
         ],
         'conditions': [
-          ['build_type=="debug"',{
+          ['wl_build_type=="debug"',{
             'cflags':[
               '-g',
             ],
-          }], # build_type=="debug"
+          }], # wl_build_type=="debug"
         ], # conditions
-      }], # OS=="LINUX"
-      ['OS=="WIN32"',{
-        'variables': {
-          'os_name':'win',
-        },
-        'defines': ['OS_WIN32'],
+      }], # WL_OS=="LINUX"
+      ['WL_OS=="WIN32"',{
+        'defines': ['WL_OS_WIN32'],
         'configurations':{
           'Debug': {
             'msvs_settings':{
@@ -68,12 +59,12 @@
             }, #msvs_settings
           }, #Release
         }, #configurations
-      }], # OS="WIN32"
-      ['build_type=="debug"',{
-        'defines': ['BUILD_DEBUG'],
+      }], # WL_OS="WIN32"
+      ['wl_build_type=="debug"',{
+        'defines': ['WL_BUILD_DEBUG'],
       }],
-      ['build_type=="release"',{
-        'defines': ['BUILD_RELEASE'],
+      ['wl_build_type=="release"',{
+        'defines': ['WL_BUILD_RELEASE'],
       }],
 	], # conditions
   },

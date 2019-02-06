@@ -32,7 +32,7 @@ int WLMutexCreate(WL_MUTEX **mutex, WL_MUTEX_TYPE type) {
 
 void WLMutexDestroy(WL_MUTEX *mutex) {
   if (mutex == NULL) {
-    return ;
+    return;
   }
   pthread_mutex_destroy(&mutex->linux_mutex);
   WLFree(mutex);

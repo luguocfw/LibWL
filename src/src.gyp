@@ -14,7 +14,7 @@
       'target_name': 'libwl',
       'type': 'static_library',
       'include_dirs':[
-        '<(PRO_ROOT)/src/include',
+        'include',
         '.',
       ],
       'sources':[
@@ -23,17 +23,17 @@
         'include/wl_mutex.h',
         'include/wl_type.h',
         'include/wl_thread.h',
+        'include/wl_dirent.h',
         'memory/wl_memory.c',
-#        'os/<(os_name)/thread/wl_mutex.c',
-#        'os/<(os_name)/thread/wl_thread.c',
-#        'os/<(os_name)/time/wl_time.c',
+        'base/wl_list.c',
+        'base/wl_list.h',
       ],
       'dependencies':[
-        'os/<(os_name)/os.gyp:os_sources',
+        'os/<(WL_OS_NAME)/os.gyp:os_sources',
       ],
       'direct_dependent_settings':{
         'include_dirs':[
-          '<(PRO_ROOT)/src/include',
+          'include',
         ],
       },
     },

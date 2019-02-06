@@ -3,7 +3,7 @@ set cur_path=%~dp0
 set "cur_path=%cur_path:\=/%"
 set GYP_TOOLS=%cur_path%tools/GYP-Tools/gyp
 set ROOT_GYP=%cur_path%all.gyp
-set GYP_DEFINES=PRO_ROOT=%cur_path% 
+set GYP_DEFINES=WL_ROOT=%cur_path% 
 set cmd_os_type=%1
 set cmd_build_type=%2
 if "%cmd_os_type%"=="" (
@@ -39,7 +39,7 @@ if %cmd_build_type% equ 0 (
   )
 )
 
-set GYP_DEFINES=%GYP_DEFINES% OS=%OS_TYPE% build_type=%build% OS_NAME=%OS_NAME%
+set GYP_DEFINES=%GYP_DEFINES% WL_OS=%OS_TYPE% wl_build_type=%build% WL_OS_NAME=%OS_NAME%
 
 cd tools
 call get_GYP-tools.bat

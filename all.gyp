@@ -14,8 +14,8 @@
       'target_name': 'wl_all',
       'type': 'none',
       'dependencies':[
-        '<(PRO_ROOT)/src/src.gyp:*',
-        '<(PRO_ROOT)/demo/demo.gyp:*',
+        'src/src.gyp:*',
+        'demo/demo.gyp:*',
       ],
     }, # 'target_name': 'wl_all',
   ], # targets
