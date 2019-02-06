@@ -32,16 +32,16 @@ static void WLLoadAllDirent(DIR *dir, WL_LIST_HEAD_S *list_head) {
     if (node == NULL) {
       break;
     }
-    node->dir_offset = telldir(dir->dir);
+    node->dir_offset = telldir(dir);
     if (node->dir_offset < 0) {
       node->dir_offset = WL_ERR_UNKNOW;
     }
-    sys_dirent = readdir(dir->dir);
+    sys_dirent = readdir(dir);
     if (sys_dirent == NULL) {
       WLFree(node);
       break;
     }
-    node->re_dirent.name_len = sys_dirent->d_reclem;
+    node->re_dirent.name_len = sys_dirent->d_reclen;
     node->re_dirent.name = sys_dirent->d_name;
     if (sys_dirent->d_type == DT_REG) {
       node->re_dirent.type = WL_DIR_FILE;
@@ -53,7 +53,7 @@ static void WLLoadAllDirent(DIR *dir, WL_LIST_HEAD_S *list_head) {
       node->re_dirent.type = WL_DIR_UNKNOW;
     }
     node->re_dirent.size = 0;
-    int ret = WLListAddNode(dir->read_list, node);
+    int ret = WLListAddNode(list_head, node);
     if (ret != 0) {
       WLFree(node);
       break;

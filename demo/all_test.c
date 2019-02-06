@@ -202,12 +202,12 @@ static int64_t TraversDir(WL_DIR *dir) {
   WL_DIRENT *ent = NULL;
   while (1) {
     total_offset = WLTelldir(dir);
-    printf("dir tell :%lld\n", total_offset);
+    printf("dir tell :%ld\n", total_offset);
     ent = WLReaddir(dir);
     if (ent == NULL) {
       break;
     }
-    printf("find dir:\tname:%s size:%lld type:", ent->name, ent->size);
+    printf("find dir:\tname:%s size:%ld type:", ent->name, ent->size);
     switch (ent->type) {
       case WL_DIR_DIR:printf("SUBDIR\n"); break;
       case WL_DIR_FILE:printf("FILE\n"); break;
@@ -235,7 +235,7 @@ static int DirentTest() {
   TraversDir(dir);
   printf("rewind dir test....\n");
   WLRewindDir(dir);
-  int max_offset = TraversDir(dir);
+  int64_t max_offset = TraversDir(dir);
   if (max_offset > 0) {
     printf("seek dir test, dir seek:%ld\n", max_offset / 2);
     WLSeekDir(dir, max_offset / 2);
