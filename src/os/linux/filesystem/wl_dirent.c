@@ -139,9 +139,6 @@ void WLSeekDir(WL_DIR * dir, uint64_t pos) {
   if (dir == NULL) {
     return;
   }
-  if (pos < 0) {
-    return;
-  }
   WL_LIST_S *node = dir->read_list->stList;
   while (node != NULL) {
     WL_NODE_DATA *node_data = (WL_NODE_DATA *)node->pData;
