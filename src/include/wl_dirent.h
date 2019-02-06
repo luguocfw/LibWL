@@ -36,4 +36,6 @@ long WLTelldir(WL_DIR *dir);
 
 void WLSeekDir(WL_DIR *dir, long pos);
 
+char WLDirInterval();
+
 #endif

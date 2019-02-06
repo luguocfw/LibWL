@@ -159,3 +159,7 @@ void WLSeekDir(WL_DIR * dir, long pos) {
     node = node->stNextNode;
   }
 }
+
+char WLDirInterval() {
+  return '/';
+}
