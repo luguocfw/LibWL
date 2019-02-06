@@ -17,7 +17,7 @@
 
 typedef struct {
   WL_DIRENT             re_dirent;
-  long                  dir_offset;
+  int64_t                  dir_offset;
   struct _finddata_t    fa;
 }WL_NODE_DATA;
 
@@ -25,7 +25,7 @@ struct WL_DIR {
   long            dir_handle;
   WL_LIST_HEAD_S      *read_list;
   WL_LIST_S           *cur_pos;
-  long                total_offset;
+  int64_t                total_offset;
 };
 
 static void WLDirentCover(struct _finddata_t *fa_in, WL_DIRENT *dirent_out) {
@@ -54,7 +54,7 @@ static int WLLoadAllDir(const char *path, WL_DIR *dir) {
   }
   path_temp[str_len] = '*';
   path_temp[str_len + 1] = '\0';
-  long total_offset = 0;
+  int64_t total_offset = 0;
   WL_NODE_DATA *first_node = (WL_NODE_DATA *)WLMalloc(sizeof(WL_NODE_DATA));
   if (first_node == NULL) {
     WLFree(path_temp);
@@ -160,7 +160,7 @@ void WLRewindDir(WL_DIR *dir) {
   dir->cur_pos = dir->read_list->stList;
 }
 
-long WLTelldir(WL_DIR *dir) {
+int64_t WLTelldir(WL_DIR *dir) {
   if (dir == NULL) {
     return WL_ERR_NULLPTR;
   }
@@ -170,7 +170,7 @@ long WLTelldir(WL_DIR *dir) {
   return ((WL_NODE_DATA *)dir->cur_pos->pData)->dir_offset;
 }
 
-void WLSeekDir(WL_DIR *dir, long pos) {
+void WLSeekDir(WL_DIR *dir, uint64_t pos) {
   if (dir == NULL) {
     return;
   }

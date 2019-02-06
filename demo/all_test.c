@@ -197,17 +197,17 @@ err:
   return 1;
 }
 
-static long TraversDir(WL_DIR *dir) {
-  long total_offset = 0;
+static int64_t TraversDir(WL_DIR *dir) {
+  int64_t total_offset = 0;
   WL_DIRENT *ent = NULL;
   while (1) {
     total_offset = WLTelldir(dir);
-    printf("dir tell :%ld\n", total_offset);
+    printf("dir tell :%lld\n", total_offset);
     ent = WLReaddir(dir);
     if (ent == NULL) {
       break;
     }
-    printf("find dir:\tname:%s size:%d type:", ent->name, ent->size);
+    printf("find dir:\tname:%s size:%lld type:", ent->name, ent->size);
     switch (ent->type) {
       case WL_DIR_DIR:printf("SUBDIR\n"); break;
       case WL_DIR_FILE:printf("FILE\n"); break;
@@ -220,7 +220,7 @@ static long TraversDir(WL_DIR *dir) {
 
 static int DirentTest() {
 #if defined(WL_OS_WIN32)
-  char test_dir[] = "E:\\test_dir";
+  char test_dir[] = "C:\\";
 #elif defined(WL_OS_LINUX)
   char test_dir[] = "/";
 #endif

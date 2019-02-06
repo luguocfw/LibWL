@@ -8,6 +8,7 @@
 //
 #ifndef __WL_DIRENT_H__
 #define __WL_DIRENT_H__
+#include <stdint.h>
 
 typedef struct WL_DIR WL_DIR;
 
@@ -21,7 +22,7 @@ typedef struct {
   WL_DIR_TYPE         type;
   char                *name;
   int                 name_len;
-  long                size;
+  int64_t                size;
 }WL_DIRENT;
 
 WL_DIR *WLOpenDir(const char *path);
@@ -32,9 +33,9 @@ WL_DIRENT *WLReaddir(WL_DIR *dir);
 
 void WLRewindDir(WL_DIR *dir);
 
-long WLTelldir(WL_DIR *dir);
+int64_t WLTelldir(WL_DIR *dir);
 
-void WLSeekDir(WL_DIR *dir, long pos);
+void WLSeekDir(WL_DIR *dir, uint64_t pos);
 
 char WLDirInterval();
 

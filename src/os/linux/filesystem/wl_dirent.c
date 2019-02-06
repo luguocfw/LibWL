@@ -16,7 +16,7 @@
 
 typedef struct {
   WL_DIRENT         re_dirent;
-  long              dir_offset;
+  int64_t           dir_offset;
 }WL_NODE_DATA;
 
 struct WL_DIR {
@@ -125,7 +125,7 @@ void WLRewindDir(WL_DIR * dir) {
   dir->cur_pos = dir->read_list->stList;
 }
 
-long WLTelldir(WL_DIR * dir) {
+int64_t WLTelldir(WL_DIR * dir) {
   if (dir == NULL) {
     return WL_ERR_NULLPTR;
   }
@@ -135,7 +135,7 @@ long WLTelldir(WL_DIR * dir) {
   return ((WL_NODE_DATA *)dir->cur_pos->pData)->dir_offset;
 }
 
-void WLSeekDir(WL_DIR * dir, long pos) {
+void WLSeekDir(WL_DIR * dir, uint64_t pos) {
   if (dir == NULL) {
     return;
   }
